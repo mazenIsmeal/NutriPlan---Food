@@ -20,6 +20,8 @@ export async function getProductByBarcode(bar) {
     },
   );
   const res = await req.json();
+  console.log(res);
+  
   return res.result;
 }
 
@@ -32,8 +34,8 @@ export async function getCategory() {
     },
   );
   const res = await req.json();
-  console.log(res.results);
-
+  console.log(res);
+  
   return res.results;
 }
 
