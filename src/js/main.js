@@ -126,6 +126,8 @@ function updateProgressBars() {
   });
 }
 
+
+
 // ============================================================================
 // 🍽️ MEAL SOURCE STATS
 // ============================================================================
@@ -211,6 +213,7 @@ function displayFoodLog() {
     return;
   }
 
+
   const html = todayMeals
     .map((meal, index) => {
       const sourceIcon =
@@ -220,6 +223,18 @@ function displayFoodLog() {
 
       return `
       <div class="border-t border-gray-200 pt-4">
+      <div class="flex items-center justify-between mb-3">
+      <h4 class="text-sm font-semibold text-gray-700">
+        Logged Items (${todayMeals.length})
+      </h4> 
+      <button
+                    id="clear-foodlog"
+                    class="text-red-500 hover:text-red-600 text-sm font-medium"
+                    
+                  >
+                    <i class="fa-solid fa-trash mr-1"></i>Clear All
+                  </button>
+      </div>
         <div class="flex items-center justify-between bg-gray-50 rounded-xl p-4 hover:bg-gray-100 transition-all">
           <div class="flex items-center gap-4">
             <img src="${meal.thumbnail}" class="w-14 h-14 rounded-xl object-cover">
@@ -286,17 +301,22 @@ document.addEventListener("DOMContentLoaded", () => {
       displayFoodLog();
     });
   }
+});
 
-  // Clear all button
-  const clearBtn = document.querySelector("#clear-foodlog");
-  if (clearBtn) {
-    clearBtn.addEventListener("click", () => {
-      const today = getTodayDate();
-      const foodLog = JSON.parse(localStorage.getItem("calories")) || [];
-      const filtered = foodLog.filter((meal) => meal.data !== today);
-      localStorage.setItem("calories", JSON.stringify(filtered));
-      displayFoodLog();
-    });
+document.addEventListener("click", (e) => {
+  if (e.target.id === "clear-foodlog") {
+    console.log("clear");
+
+    const today = getTodayDate();
+    const foodLog = JSON.parse(localStorage.getItem("calories")) || [];
+
+    const filtered = foodLog.filter((meal) => meal.data !== today);
+
+    console.log(foodLog);
+    
+
+    localStorage.setItem("calories", JSON.stringify(filtered));
+    displayFoodLog();
   }
 });
 
@@ -1261,3 +1281,14 @@ function renderWeeklyOverview() {
 
 // تشغيل أول مرة
 renderWeeklyOverview();
+
+// format date Food Log
+const date = new Date();
+
+const formattedDate = date.toLocaleDateString("en-US", {
+  weekday: "long",  // Tuesday
+  month: "short",   // Jan
+  day: "numeric"    // 14
+});
+
+document.querySelector('#foodlog-date').innerHTML = formattedDate
